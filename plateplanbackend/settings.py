@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "djoser",
     'corsheaders',
-    "api"
+    "account"
 ]
 
 MIDDLEWARE = [
@@ -145,7 +145,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "assets/")
 
 DJOSER = {
     "LOGIN_FIELD": "email",
-    "USER_CREATE_PASSWORD_RETYPE":True,
     "USERNAME_CHANGED_EMAIL_CONFIRMATION":True,
     "PASSWORD_CHANGED_EMAIL_CONFIRMATION":True,
     "SEND_CONFIRMATION_EMAIL":True,
@@ -154,9 +153,9 @@ DJOSER = {
     "USERNAME_RESET_CONFIRM_URL":"email/reset/confirm/{uid}/{token}",
     "ACTIVATION_URL":"activate/{uid}/{token}",
     "SERIALIZERS": {
-        "user_create":"api.serializers.UserCreateSerializer",
-        "user":"api.serializers.UserCreateSerializer",
-        "user_delete":"api.serializers.UserDeleteSerializer",
+        "user_create":"account.serializers.UserCreateSerializer",
+        "user":"account.serializers.UserCreateSerializer",
+        "user_delete":"account.serializers.UserDeleteSerializer",
     }
 }
 
@@ -178,7 +177,7 @@ SIMPLE_JWT = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = "api.UserAccount"
+AUTH_USER_MODEL = "account.UserAccount"
 
 CORS_ORIGIN_ALLOW_ALL = True
 
