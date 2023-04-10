@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -163,7 +164,7 @@ DJOSER = {
     "SERIALIZERS": {
         "user_create":"account.serializers.UserCreateSerializer",
         "user":"account.serializers.UserCreateSerializer",
-        "current_user":"account.serializers.UserCreateSerializer",
+        # "current_user":"account.serializers.UserCreateSerializer",
         "user_delete":"account.serializers.UserDeleteSerializer",
     }
 }
