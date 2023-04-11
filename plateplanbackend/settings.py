@@ -161,10 +161,12 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL":"password/reset/confirm/{uid}/{token}",
     "USERNAME_RESET_CONFIRM_URL":"email/reset/confirm/{uid}/{token}",
     "ACTIVATION_URL":"activate/{uid}/{token}",
+    "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy",
+    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": ["https://localhost:8000", "http://localhost:5173"],
     "SERIALIZERS": {
         "user_create":"account.serializers.UserCreateSerializer",
         "user":"account.serializers.UserCreateSerializer",
-        # "current_user":"account.serializers.UserCreateSerializer",
+        "current_user":"account.serializers.UserCreateSerializer",
         "user_delete":"account.serializers.UserDeleteSerializer",
     }
 }
@@ -194,8 +196,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # google OAuth2 credentials
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('GOOGLE_AUTH_CLIENT_ID')
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('GOOGLE_AUTH_CLIENT_SECRET')
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('GOOGLE_AUTH_CLIENT_ID') 
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("GOOGLE_AUTH_CLIENT_SECRET")
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile","openid"]
 SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ["first_name","last_name"]
 
@@ -209,5 +211,6 @@ AUTH_USER_MODEL = "account.UserAccount"
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = [
-    'http://127.0.0.1:5173',  # Replace with your React app's origin
+    'http://127.0.0.1:5173', 
+    'http://localhost:5173'# Replace with your React app's origin
 ]
