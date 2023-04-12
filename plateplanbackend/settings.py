@@ -47,12 +47,15 @@ INSTALLED_APPS = [
     "djoser",
     'corsheaders',
     "authentication",
+    "social_django",
     "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 
 
 MIDDLEWARE = [
+    "social_django.middleware.SocialAuthExceptionMiddleware",
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -76,6 +79,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -153,6 +158,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 FILE_UPLOAD_PERMISSIONS = 0o640
 
+AUTHENTICATION_BACKENDS = (
+    "social_core.backends.google.GoogleOAuth2",
+    "django.contrib.auth.backends.ModelBackend",
+)
+
 
 DJOSER = {
     "LOGIN_FIELD": "email",
@@ -164,10 +174,11 @@ DJOSER = {
     "USERNAME_RESET_CONFIRM_URL":"email/reset/confirm/{uid}/{token}",
     "ACTIVATION_URL":"activate/{uid}/{token}",
     "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy",
-    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": ["https://localhost:8000", "http://localhost:5173"],
+    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": ["http://localhost:8000", "http://127.0.0.1:8000","http://localhost:5173", "http://127.0.0.1:5173"],
     "SERIALIZERS": {
         "user_create":"authentication.serializers.UserCreateSerializer",
         "user":"authentication.serializers.UserCreateSerializer",
+        "current_user":"authentication.serializers.UserCreateSerializer",
         "user_delete":"authentication.serializers.UserDeleteSerializer",
     }
 }
@@ -185,7 +196,16 @@ SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
    "ACCESS_TOKEN_LIFETIME": timedelta(hours=6),
    "REFRESH_TOKEN_LIFETIME": timedelta(hours=12),
+   "AUTH_TOKEN_CLASSES":(
+       "rest_framework_simplejwt.tokens.AccessToken",
+   )
 }
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('GOOGLE_AUTH_CLIENT_ID')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('GOOGLE_AUTH_CLIENT_SECRET')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ["https://www.googleapis.com/auth/userinfo.email","https://www.googleapis.com/auth/userinfo.profile","openid"]
+SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ["first_name","last_name"]
 
 
 # Default primary key field type
