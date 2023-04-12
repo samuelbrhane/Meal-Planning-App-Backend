@@ -46,15 +46,13 @@ INSTALLED_APPS = [
     "rest_framework",
     "djoser",
     'corsheaders',
-    "account",
-    "social_django",
+    "authentication",
     "rest_framework_simplejwt",
-    "rest_framework_simplejwt.token_blacklist"
-    
 ]
 
+
+
 MIDDLEWARE = [
-    "social_django.middleware.SocialAuthExceptionMiddleware",
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -78,8 +76,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                "social_django.context_processors.backends",
-                "social_django.context_processors.login_redirect"
             ],
         },
     },
@@ -164,10 +160,9 @@ DJOSER = {
     "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy",
     "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": ["https://localhost:8000", "http://localhost:5173"],
     "SERIALIZERS": {
-        "user_create":"account.serializers.UserCreateSerializer",
-        "user":"account.serializers.UserCreateSerializer",
-        "current_user":"account.serializers.UserCreateSerializer",
-        "user_delete":"account.serializers.UserDeleteSerializer",
+        "user_create":"authentication.serializers.UserCreateSerializer",
+        "user":"authentication.serializers.UserCreateSerializer",
+        "user_delete":"authentication.serializers.UserDeleteSerializer",
     }
 }
 
@@ -184,29 +179,16 @@ SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
    "ACCESS_TOKEN_LIFETIME": timedelta(hours=6),
    "REFRESH_TOKEN_LIFETIME": timedelta(hours=12),
-   "AUTH_TOKEN_CLASSES":(
-       "rest_framework.simplejwt.tokens.AccessToken",
-   ),
+
 }
 
-# authentications
-AUTHENTICATION_BACKENDS = (
-    "social_core.backends.google.GoogleOAuth2",
-    "django.contrib.auth.backends.ModelBackend",
-)
-
-# google OAuth2 credentials
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('GOOGLE_AUTH_CLIENT_ID') 
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("GOOGLE_AUTH_CLIENT_SECRET")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile","openid"]
-SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ["first_name","last_name"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = "account.UserAccount"
+AUTH_USER_MODEL = "authentication.UserAccount"
 
 CORS_ORIGIN_ALLOW_ALL = True
 
