@@ -18,7 +18,7 @@ class FoodItem(models.Model):
 
 # create a new meal
 class Meal(models.Model):
-    userId = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     selectedDate = models.CharField(max_length=8, unique=True)
     breakfast = models.ManyToManyField(FoodItem, related_name='breakfast_set')
     lunch = models.ManyToManyField(FoodItem, related_name='lunch_set')
