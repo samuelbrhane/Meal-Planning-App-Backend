@@ -43,10 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     # added apps
+    "authentication",
+    "mealapp",
     "rest_framework",
     "djoser",
     'corsheaders',
-    "authentication",
     "social_django",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
