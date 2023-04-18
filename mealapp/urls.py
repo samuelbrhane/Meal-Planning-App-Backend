@@ -1,11 +1,11 @@
 from django.urls import path
-from . import views
+from rest_framework.urlpatterns import format_suffix_patterns
+from .views import meals_list, meal_detail, user_meals
 
 urlpatterns = [
-    # Routes for CRUD operations on meals
-    path('', views.meal_list, name='meal_list'),
-    path('detail/<str:pk>/', views.meal_detail, name='meal_detail'),
-    
-    # Route to get all food items for a single person
-    path('user/<str:pk>/', views.getMealsByUserId, name='get_meals_by_userId'),
+    path('', meals_list, name="meals-list"),
+    path('<int:id>/', meal_detail, name="meal-detail"),
+    path('user/<int:user_id>/', user_meals, name="user-meals"),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)

@@ -1,12 +1,9 @@
-from rest_framework.serializers import ModelSerializer
-from .models import Meal, FoodItem
+from rest_framework import serializers
+from .models import Meal
 
-class MealSerializer(ModelSerializer):
+
+class MealSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meal
-        fields = "__all__"
-        
-class FoodItemSerializer(ModelSerializer):
-    class Meta:
-        model = FoodItem
-        fields: "__all__"
+        fields = '__all__'
+        read_only_fields = ('user', )
