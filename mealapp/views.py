@@ -29,7 +29,7 @@ def meals_list(request):
 
         serializer = MealSerializer(data=data)
         if serializer.is_valid():
-            serializer.save(user=request.user)  # pass the authenticated user
+            serializer.save(user=request.user)
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
 
