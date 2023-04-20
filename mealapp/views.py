@@ -72,3 +72,17 @@ def user_meals(request, user_id):
     meals = Meal.objects.filter(user=user_id)
     serializer = MealSerializer(meals, many=True)
     return JsonResponse(serializer.data, safe=False)
+
+# Get single meal based on selectedDate
+@csrf_exempt
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def meal_by_date(request, selected_date):
+    try:
+        meal = Meal.objects.get(user=request.user, selectedDate=selected_date)
+    except Meal.DoesNotExist:
+        return JsonResponse({'message': 'The meal does not exist'}, status=404)
+
+    serializer = MealSerializer(meal)
+    return JsonResponse(serializer.data)
+
