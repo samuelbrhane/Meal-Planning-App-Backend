@@ -11,15 +11,16 @@ from .serializers import MealSerializer
 @csrf_exempt
 @api_view(['GET', 'POST'])
 def meals_list(request):
-    
+    # get all meals   
     if request.method == 'GET':       
         meals = Meal.objects.all()
         serializer = MealSerializer(meals, many=True)
         return JsonResponse(serializer.data, safe=False)
+    
+    # create a new meal
     elif request.method == 'POST':
         data = JSONParser().parse(request)
-        data['user'] = request.user.id
-        
+        data['user'] = request.user.id       
         try:
             meal = Meal.objects.get(user=request.user, selectedDate=data['selectedDate'])
             serializer = MealSerializer(meal)
@@ -46,10 +47,12 @@ def meal_detail(request, id):
     if meal.user != request.user:
         return JsonResponse({'message': 'Unauthorized'}, status=401)
 
+# get single meal by id
     if request.method == 'GET':
         serializer = MealSerializer(meal)
         return JsonResponse(serializer.data)
 
+# update a meal 
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
         serializer = MealSerializer(meal, data=data)
@@ -58,6 +61,7 @@ def meal_detail(request, id):
             return JsonResponse(serializer.data)
         return JsonResponse(serializer.errors, status=400)
 
+# delete a meal
     elif request.method == 'DELETE':
         meal.delete()
         return JsonResponse({'message': 'Meal was deleted successfully!'}, status=204)
