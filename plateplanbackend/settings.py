@@ -51,9 +51,17 @@ INSTALLED_APPS = [
     "social_django",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
-    # "django.contrib.postgres",
+    "channels",
 ]
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 
 MIDDLEWARE = [

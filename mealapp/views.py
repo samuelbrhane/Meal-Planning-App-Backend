@@ -6,6 +6,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .models import Meal
 from .serializers import MealSerializer
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 # Get all meals for all users or create a new meal
 @csrf_exempt
