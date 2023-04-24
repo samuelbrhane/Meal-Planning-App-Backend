@@ -5,6 +5,7 @@ from mealapp.serializers import MealSerializer
 
 class MealUsers(AsyncWebsocketConsumer):
     async def connect(self):
+        print("connect")
         self.user = self.scope["user"]
         self.group_name = "user_%s" % self.user.id
 
@@ -15,6 +16,7 @@ class MealUsers(AsyncWebsocketConsumer):
         )
 
         await self.accept()
+        print("WebSocket connection established")
 
     async def disconnect(self, close_code):
         # Leave the group
@@ -29,6 +31,7 @@ class MealUsers(AsyncWebsocketConsumer):
         # Check if the action is 'delete'
         if data['action'] == 'delete':
             meal_id = data['id']
+            print("meal_id",meal_id)
 
             try:
                 meal = Meal.objects.get(id=meal_id, user=self.user)
@@ -49,6 +52,7 @@ class MealUsers(AsyncWebsocketConsumer):
         # Check if the action is 'update'
         elif data['action'] == 'update':
             meal_data = data['meal']
+            print("update data",meal_data)
 
             try:
                 meal = Meal.objects.get(id=meal_data['id'], user=self.user)
