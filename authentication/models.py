@@ -34,6 +34,8 @@ class UserAccount(AbstractBaseUser,PermissionsMixin):
     last_name = models.CharField(max_length=255,blank=True,null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    meal_type = models.CharField(max_length=255, blank=True, null=True)
+    allergies = models.JSONField(default=list, blank=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name"]
