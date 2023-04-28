@@ -1,5 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import Group
+
+
+# Define user groups
+class UserGroups:
+    USER_GROUP_NAME = 'User'
+    SUPERUSER_GROUP_NAME = 'Superuser'
+
+    @staticmethod
+    def create_groups():
+        user_group, created = Group.objects.get_or_create(name=UserGroups.USER_GROUP_NAME)
+        superuser_group, created = Group.objects.get_or_create(name=UserGroups.SUPERUSER_GROUP_NAME)
+
+
 
 class UserAccountManager(BaseUserManager):
     # create a new user account
@@ -12,6 +26,9 @@ class UserAccountManager(BaseUserManager):
         
         user.set_password(password)
         user.save()
+        
+        # add user to User group
+        user.groups.add(Group.objects.get(name=UserGroups.USER_GROUP_NAME))
         return user
     
     # create a new super user account
@@ -24,7 +41,13 @@ class UserAccountManager(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
         
-        return self.create_user(email, password, **extra_fields) 
+        # create superuser object
+        superuser = self.create_user(email, password, **extra_fields)
+        
+        # add superuser to Superuser group
+        superuser.groups.add(Group.objects.get(name=UserGroups.SUPERUSER_GROUP_NAME))
+        
+        return superuser
  
     
     
@@ -36,6 +59,7 @@ class UserAccount(AbstractBaseUser,PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     meal_type = models.CharField(max_length=255, blank=True, null=True)
     allergies = models.JSONField(default=list, blank=True)
+    groups = models.ManyToManyField(Group, blank=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name"]
