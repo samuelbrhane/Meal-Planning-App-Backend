@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.contrib.auth.models import Group
-
+from django.contrib.auth.models import Permission
 
 # Define user groups
 class UserGroups:
@@ -12,7 +12,6 @@ class UserGroups:
     def create_groups():
         user_group, created = Group.objects.get_or_create(name=UserGroups.USER_GROUP_NAME)
         superuser_group, created = Group.objects.get_or_create(name=UserGroups.SUPERUSER_GROUP_NAME)
-
 
 
 class UserAccountManager(BaseUserManager):
@@ -74,3 +73,28 @@ class UserAccount(AbstractBaseUser,PermissionsMixin):
     
     def __str__(self):
         return self.email
+    
+class TokenBlacklist(models.Model):
+    """
+    A model to store blacklisted tokens. This is useful for logout functionality.
+    """
+    token = models.CharField(max_length=500, unique=True)
+    blacklisted_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Token Blacklist"
+        verbose_name_plural = "Token Blacklist"
+
+class OutstandingToken(models.Model):
+    """
+    A model to store outstanding tokens. These are tokens that have not expired yet but
+    have been deleted or blacklisted manually.
+    """
+    token = models.CharField(max_length=500, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Outstanding Token"
+        verbose_name_plural = "Outstanding Tokens"
+
+   
