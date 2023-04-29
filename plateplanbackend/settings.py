@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # added apps
     "authentication",
     "mealapp",
+    "celeryTasks",
     "rest_framework",
     "djoser",
     'corsheaders',

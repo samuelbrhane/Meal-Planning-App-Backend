@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import Permission
+from celeryTasks.tasks import send_notification_email
+from django.conf import settings
+
+
 
 # Define user groups
 class UserGroups:
@@ -28,6 +32,9 @@ class UserAccountManager(BaseUserManager):
         
         # add user to User group
         user.groups.add(Group.objects.get(name=UserGroups.USER_GROUP_NAME))
+        
+        # trigger send_notification_email task
+        send_notification_email.delay(email)
         return user
     
     # create a new super user account
