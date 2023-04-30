@@ -8,6 +8,7 @@ from .models import Meal
 from .serializers import MealSerializer
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from celeryTasks.tasks import meal_created_notification_email, meal_deleted_notification_email, meal_updated_notification_email
 
 # Get all meals for all users or create a new meal
 @csrf_exempt
@@ -32,9 +33,13 @@ def meals_list(request):
 
         serializer = MealSerializer(data=data)
         if serializer.is_valid():
-            serializer.save(user=request.user)
+            meal = serializer.save(user=request.user)
+            
+            # trigger meal_created_notification_email task
+            meal_created_notification_email.delay(request.user.email, meal.selectedDate)
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
 
 
 # Get, update or delete a single meal
@@ -60,12 +65,18 @@ def meal_detail(request, id):
         serializer = MealSerializer(meal, data=data)
         if serializer.is_valid():
             serializer.save()
+            
+            # trigger meal_updated_notification_email task
+            meal_updated_notification_email.delay(request.user.email, meal.selectedDate)
             return JsonResponse(serializer.data)
         return JsonResponse(serializer.errors, status=400)
 
 # delete a meal
     elif request.method == 'DELETE':
         meal.delete()
+        
+        # trigger meal_deleted_notification_email task
+        meal_deleted_notification_email.delay(request.user.email, meal.selectedDate)
         return JsonResponse({'message': 'Meal was deleted successfully!'}, status=204)
 
 # Get all meals for a single user
