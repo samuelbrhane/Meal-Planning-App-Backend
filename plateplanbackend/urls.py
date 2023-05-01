@@ -43,6 +43,6 @@ websocket_urlpatterns = [
 urlpatterns += [re_path(r'^.*',TemplateView.as_view(template_name="index.html"))]
 
 # add custom text in admin page
-admin.site.index_title = "Plate Plan Meal Planner"
-admin.site.site_header = "Plate Plan Admin Panel"
+admin.site.index_title = "Plate Plan"
+admin.site.site_header = "Plate Plan Admin"
 admin.site.site_title = "Site Meal Planner"
