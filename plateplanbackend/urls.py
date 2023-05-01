@@ -39,4 +39,5 @@ websocket_urlpatterns = [
     path('ws/meal/', MealUsers.as_asgi()),
 ]
 
+
 urlpatterns += [re_path(r'^.*',TemplateView.as_view(template_name="index.html"))]
