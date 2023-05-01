@@ -25,6 +25,7 @@ django-allauth==0.54.0
 django-celery-beat==2.5.0
 django-cors-headers==3.14.0
 django-db==0.0.7
+django-jazzmin==2.6.0
 django-redis==5.2.0
 django-rest-auth==0.9.5
 django-templated-mail==1.1.1
@@ -34,6 +35,7 @@ djangorestframework-simplejwt==4.8.0
 djoser==2.1.0
 ecdsa==0.18.0
 filelock==3.10.7
+gunicorn==19.9.0
 idna==3.4
 itypes==1.2.0
 Jinja2==3.1.2
@@ -69,5 +71,6 @@ urllib3==1.26.15
 vboxapi==1.0
 vine==5.0.0
 virtualenv==20.21.0
+waitress==2.1.2
 wcwidth==0.2.6
 wrapt==1.15.0
